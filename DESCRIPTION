@@ -1,26 +1,15 @@
 Package: PIGE
 Type: Package
-Title: Self contained gene set analysis for gene- and
-        pathway-environment interaction analysis
-Version: 0.9
-Date: 2013-12-30
-Author: Benoit Liquet, Therese Truong
-Maintainer: Benoit Liquet <benoit.liquet@isped.u-bordeaux2.fr>
+Title: Self Contained Gene Set Analysis for Gene- And
+        Pathway-Environment Interaction Analysis
+Version: 1.1
+Date: 2017-08-29
+Author: Benoit Liquet, Therese Truong, Camilo Broc
+Maintainer: Benoit Liquet <benoit.liquet@univ-pau.fr>
 Depends: snowfall,ARTP,xtable,survival
-Description: Extension of the ARTP package for gene- and pathway-environment
-    interaction
+Description: Extension of the 'ARTP' package (Yu, K., et al. (2009) <doi:10.1002/gepi.20422>) for gene- and pathway-environment interaction. A permutation and a parametric bootstrap approaches have been implemented  for investigating gene- and pathway-environment interaction analysis (Truong, T., et al. (2014) <doi:10.1530/ERC-14-0121>).
 License: GPL (>= 2.0)
-Collate: 'ARTP-GE.R' 'data.to.PIGE.R' 'permutation.snp.R'
-        'PIGE-package.R' 'compute.p.snp.obs.R' 'LR.inter.cat.R'
-        'LR.inter.cont.R' 'permutation.wrapper.cont.R' 'LR.cont.R'
-        'permutation.wrapper.cat.inter.R'
-        'permutation.wrapper.cont.inter.R'
-        'permutation.wrapper.cat.inter.Y.and.X.R'
-        'permutation.wrapper.cont.inter.Y.and.X.R'
-        'permutation.wrapper.cont.Y.and.X.R' 'LR.cont.surv.R'
-        'LR.inter.cat.surv.R' 'LR.inter.cont.surv.R'
-        'data.to.list.gene.snp.R'
-Packaged: 2013-12-30 05:47:20 UTC; liquet
 NeedsCompilation: no
+Packaged: 2017-08-30 00:37:29 UTC; liquetwe
 Repository: CRAN
-Date/Publication: 2013-12-30 07:44:39
+Date/Publication: 2017-08-30 08:23:09 UTC

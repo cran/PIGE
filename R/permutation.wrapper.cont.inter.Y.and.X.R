@@ -6,6 +6,8 @@ permutation.wrapper.cont.inter.Y.and.X <- function(x,mat,data,model,var.inter,Ou
   nameY.X <- all.vars(model)
   data.perm <- data[indix,nameY.X]
   var.inter <- var.inter[indix]
+# print(data.perm)
+# print(model)
   if(Outcome.model=="binary") {
   p.test <- apply(mat,MARGIN=2,FUN=LR.inter.cont,formula=model,data=data.perm,Z1=var.inter)
   }else{

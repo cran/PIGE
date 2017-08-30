@@ -12,7 +12,7 @@
 #' @param var.inter name of the variable which is tested in interaction with the SNPs (SNP:E). By default var.inter=NULL correspond to a test on the SNPs (no interaction)
 #' @param indice.snp vector or character indicating the SNPs to be tested. 
 #' @param class.inter class of the \code{var.inter} variable. By default, the variable is considered as continuous and a Wald test is performed. Use ("factor") to indicate categorical variable.
-#' @param method method choice for the permutation. By default "YX" a permutation of the phenotype and the adjusted effect are performed otherwise only the phenotype is permuted.
+#' @param method method choice for the permutation. By default "YX" a permutation of the phenotype and the adjusted effect are performed otherwise only the phenotype is permuted. A method "YwithinX" permutes the outcome within levels of the "var.inter variable".
 #' @param nbcpu integer indicating the number of CPU of your computer (-1). By default, the function use only
 #' one cpu.
 #' @param Npermut number of permutation (1000 by default).
@@ -47,6 +47,19 @@
 #' ,data=data.surv,indice.snp=res1$snp.selected,var.inter="var_int",
 #' class.inter=NULL,nbcpu=3,Npermut=9,file.out="res-permut-surv")
 
+#' ##YwithinX example:
+#' data(data.pathway)
+#' data(list.gene.snp)
+#' res <-data.to.PIGE(data=data.pige,data.pathway=data.pathway,
+#' list.gene.snp=list.gene.snp,choice.pathway=c(1,2))
+#' formul <- formula(y~factor(cov1)+factor(cov2)+factor(cov3)+factor(cov4)
+#' +var_int)
+#' debut <- Sys.time() 
+#' p.snp.permut.ex <-  permutation.snp(model=formul,data=data.pige, method = "YwithinX",
+#' indice.snp=res$snp.selected,var.inter="var_int",class.inter=NULL,nbcpu=3,
+#' Npermut=9,file.out="res-permut") 
+#' print(Sys.time()-debut)
+
 permutation.snp <- function(model,Outcome.model="binary",data,var.inter=NULL,indice.snp,class.inter=NULL,method="YX",nbcpu=NULL,Npermut=1000,file.out="res-permut"){
   mat.snp <- data[,indice.snp]
   if(is.null(nbcpu)){sfInit(parallel=FALSE, cpus=1)}else{
@@ -68,6 +81,8 @@ permutation.snp <- function(model,Outcome.model="binary",data,var.inter=NULL,ind
     var.inter <- data[,var.inter]
     if(method=="YX"){
     result <- sfLapply(1:Npermut,permutation.wrapper.cont.inter.Y.and.X,mat=mat.snp,data=data,model=model,var.inter=var.inter,Outcome.model=Outcome.model)
+    }else if(method=="YwithinX"){
+    result <- sfLapply(1:Npermut,permutation.wrapper.cont.inter.Y.within.X,mat=mat.snp,data=data,model=model,var.inter=var.inter,Outcome.model=Outcome.model)
     }else{
     result <- sfLapply(1:Npermut,permutation.wrapper.cont.inter,mat=mat.snp,data=data,model=model,var.inter=var.inter,Outcome.model=Outcome.model)
     }
@@ -75,6 +90,8 @@ permutation.snp <- function(model,Outcome.model="binary",data,var.inter=NULL,ind
     var.inter <- factor(data[,var.inter])
     if(method=="YX"){
     result <- sfLapply(1:Npermut,permutation.wrapper.cat.inter.Y.and.X,mat=mat.snp,data=data,model=model,var.inter=var.inter,Outcome.model=Outcome.model)
+    }else if(method=="YwithinX"){
+    result <- sfLapply(1:Npermut,permutation.wrapper.cat.inter.Y.within.X,mat=mat.snp,data=data,model=model,var.inter=var.inter,Outcome.model=Outcome.model)
     }else{
     result <- sfLapply(1:Npermut,permutation.wrapper.cat.inter,mat=mat.snp,data=data,model=model,var.inter=var.inter,Outcome.model=Outcome.model)  
     }
